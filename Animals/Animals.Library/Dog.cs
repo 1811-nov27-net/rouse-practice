@@ -2,14 +2,32 @@
 
 namespace Animals.Library
 {
-    public class Dog
+    public class Dog : IAnimal
     {
         // Properties (NOT fields)
-        // Auto-property
-        public string Name {get; set; }
+        // Only auto-properties have implicit backing fields, as soon as you give a body to the get or set, you need to add a private field yourself.
+       
+       // Weird example to show you din't even need a field
+        public string Name 
+        {
+            get { return "Bob"; } 
+            set { System.Console.WriteLine("inside property setter"); }
+        }
 
-        // Auto-property
-        public string Breed {get; set; }
+        // Property with validation
+        private string _breed;
+        public string Breed 
+        { 
+            get { return _breed; } 
+            set
+            {
+                // validation - no null or empty allowed
+                if (value != null && value != "")
+                {
+                    _breed = value;
+                }
+            }
+        }
     
         // Property (with explicit backing field)
         private int _age;
@@ -41,6 +59,18 @@ namespace Animals.Library
         public void Bark()
         {
             Console.WriteLine("Woof");
+        }
+
+        public void MakeSound()
+        {
+            Bark();
+        }
+
+        public void GoTo(string location)
+        {
+            // String interpolation syntax; prefix with $, inside braces reads as code (run through .ToString())
+            string output = $"Walking to {location}.";
+            System.Console.WriteLine(output);
         }
 
         // snippets: prop, propfull
