@@ -1,0 +1,89 @@
+﻿@* Razor comment - disappears when page is rendered *@
+<!-- HTML comments are shown to the client (via 'View Source') -->
+
+@* Views can be loosely typed or strongly typed *@
+@* Strongly typed views accept one model with the defined type - *@
+@* A view is strongly type when it has the @model directive *@
+
+@model IEnumerable<MVCDemo.Models.Movie>
+
+@* @model defines what Model will be inside this view*@
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+@* Razor expressions *@
+@DateTime.Now
+@(1 + 1)
+@* ^ A value, not a statement, will be rendered as HTML on to the page (i.e. it will show up as "2" in HTML code) *@
+
+@* Razor blocks are statements within braces, -  *@
+
+
+@* It's the controller's job to do logic, it's not good practice to put logic in views *@
+
+@* There's only one model per view, if you meed more than one model, make a new model that contains all the onfp you want, ESPECIALLY if this new model is only used on one page (this model is called a "viewmodel") *@
+
+@*
+Tag helpers
+    > a (anchor) tag helper, for links within the web application
+        >> attributes
+            >>> asp-action="the action name"
+            >>> asp-controller="the controller name" (defaults to same controller as this one)
+            >>> asp-route= -
+            >>> asp-route-id="the value of id to go in the URL"
+            >>> asp-whatever-route-parameter="The values of that route parameter to go in the URL"
+
+
+
+*@
+<p>
+    @* this is a tag helper *@
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @* This is an example of an "HTML helper" provided by the Razor engine *@
+                @Html.DisplayNameFor(model => model.Id)
+                @* Output the name of a field *@
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReleaseDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @* Output the value of a field as a string *@
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReleaseDate)
+            </td>
+            <td>
+                @* HTML helper for creating a link to an action in the web app *@
+                @* Html.ActionLink( link text, action name, route parameters )*@
+                @* 'new { }' is a C# anonymous property*@
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                @* Each controller has one or more action methods. which typically are one-to-one with pages from the client's perspective *@
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
